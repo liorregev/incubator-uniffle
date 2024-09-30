@@ -876,7 +876,11 @@
               </goals>
               <configuration>
                 <rules>
-                  <requireUpperBoundDeps/>
+                  <requireUpperBoundDeps>
+                    <excludes>
+                      <exclude>io.netty:netty-transport-native-epoll</exclude>
+                    </excludes>
+                  </requireUpperBoundDeps>
                   <bannedDependencies>
                     <excludes>
                       <exclude>org.slf4j:slf4j-log4j12</exclude>
