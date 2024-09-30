@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.BindException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -335,6 +336,12 @@ public class KerberizedHadoop implements Serializable {
     @Override
     public void authorize(UserGroupInformation userGroupInformation, String s)
         throws AuthorizationException {
+      UserGroupInformation superUser = userGroupInformation.getRealUser();
+      LOGGER.info("Proxy: {}", superUser.getShortUserName());
+    }
+
+    @Override
+    public void authorize(UserGroupInformation userGroupInformation, InetAddress inetAddress) throws AuthorizationException {
       UserGroupInformation superUser = userGroupInformation.getRealUser();
       LOGGER.info("Proxy: {}", superUser.getShortUserName());
     }
