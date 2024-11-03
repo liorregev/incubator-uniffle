@@ -20,5 +20,6 @@ ARG BASE_IMAGE=eclipse-temurin:11-jdk
 FROM ${BASE_IMAGE}
 
 RUN apt-get update && \
-    apt-get install -y zlib1g zlib1g-dev lzop lsof netcat-openbsd dnsutils less procps iputils-ping && \
+    apt-get install -y zlib1g zlib1g-dev lzop lsof netcat-openbsd dnsutils less procps iputils-ping git build-essential cmake && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN mkdir /mimalloc && git clone https://github.com/microsoft/mimalloc /mimalloc && cd /mimalloc && git checkout v2.1.7 && mkdir -p out/release && cd out/release && cmake ../.. && make && make install

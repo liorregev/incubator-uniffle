@@ -35,7 +35,7 @@ function exit_with_usage() {
 }
 
 REGISTRY="docker.io/library"
-HADOOP_VERSION=2.8.5
+HADOOP_VERSION=3.3.6
 HADOOP_SHORT_VERSION=$(echo $HADOOP_VERSION | awk -F "." '{print $1"."$2}')
 AUTHOR=$(whoami)
 # If you are based in China, you could pass --apache-mirror <a_mirror_url> when building this.
