@@ -33,6 +33,7 @@ const (
 	defaultExcludeNodesFilePath = "/config/exclude_nodes"
 	defaultShuffleServerSync    = false
 	defaultRPCPort              = 19997
+	defaultRPCNettyPort         = 19998
 	defaultHTTPPort             = 19996
 	defaultReplicas             = 1
 	defaultXmxSize              = "800M"
@@ -81,6 +82,7 @@ func buildShuffleServerConfigWithDefaultValue() *unifflev1alpha1.ShuffleServerCo
 		Sync:         pointer.Bool(defaultShuffleServerSync),
 		Replicas:     pointer.Int32(defaultReplicas),
 		RPCPort:      pointer.Int32(defaultRPCPort),
+		RPCNettyPort: pointer.Int32(defaultRPCNettyPort),
 		HTTPPort:     pointer.Int32(defaultHTTPPort),
 		UpgradeStrategy: &unifflev1alpha1.ShuffleServerUpgradeStrategy{
 			Type: unifflev1alpha1.FullUpgrade,

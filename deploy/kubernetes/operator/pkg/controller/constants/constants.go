@@ -67,8 +67,15 @@ const (
 type PropertyKey string
 
 const (
+	// RPCServerType represent shuffle server RPC type
+	RPCServerType PropertyKey = "rss.rpc.server.type"
+
 	// RPCServerPort represent rss port property in configuration of coordinators or shuffle servers.
 	RPCServerPort PropertyKey = "rss.rpc.server.port"
+
+	// RPCNettyServerPort represent netty rss port property in configuration of shuffle servers.
+	RPCNettyServerPort PropertyKey = "rss.server.netty.port"
+
 	// JettyHTTPPort represent http port property in configuration of coordinators or shuffle servers.
 	JettyHTTPPort PropertyKey = "rss.jetty.http.port"
 

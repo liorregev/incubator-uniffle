@@ -248,6 +248,8 @@ func GenerateName(rss *unifflev1alpha1.RemoteShuffleService) string {
 func GenerateProperties(rss *unifflev1alpha1.RemoteShuffleService) map[controllerconstants.PropertyKey]string {
 	result := make(map[controllerconstants.PropertyKey]string)
 	result[controllerconstants.RPCServerPort] = fmt.Sprintf("%v", *rss.Spec.ShuffleServer.RPCPort)
+	result[controllerconstants.RPCNettyServerPort] = fmt.Sprintf("%v", *rss.Spec.ShuffleServer.RPCNettyPort)
+	result[controllerconstants.RPCServerType] = fmt.Sprintf("%v", *rss.Spec.ShuffleServer.RPCServerType)
 	result[controllerconstants.JettyHTTPPort] = fmt.Sprintf("%v", *rss.Spec.ShuffleServer.HTTPPort)
 	result[controllerconstants.CoordinatorQuorum] = coordinator.GenerateAddresses(rss)
 	result[controllerconstants.StorageBasePath] = generateStorageBasePath(rss)
@@ -289,6 +291,10 @@ func generateMainContainerPorts(rss *unifflev1alpha1.RemoteShuffleService) []cor
 	ports := []corev1.ContainerPort{
 		{
 			ContainerPort: *rss.Spec.ShuffleServer.RPCPort,
+			Protocol:      corev1.ProtocolTCP,
+		},
+		{
+			ContainerPort: *rss.Spec.ShuffleServer.RPCNettyPort,
 			Protocol:      corev1.ProtocolTCP,
 		},
 		{

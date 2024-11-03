@@ -53,6 +53,7 @@ func TestBuildRSSWithDefaultValue(t *testing.T) {
 	assertion.Equal(rss.Spec.ShuffleServer.Sync, pointer.Bool(defaultShuffleServerSync))
 	assertion.Equal(rss.Spec.ShuffleServer.Replicas, pointer.Int32(defaultReplicas))
 	assertion.Equal(rss.Spec.ShuffleServer.RPCPort, pointer.Int32(defaultRPCPort))
+	assertion.Equal(rss.Spec.ShuffleServer.RPCNettyPort, pointer.Int32(defaultRPCNettyPort))
 	assertion.Equal(rss.Spec.ShuffleServer.HTTPPort, pointer.Int32(defaultHTTPPort))
 	assertion.Equal(rss.Spec.ShuffleServer.UpgradeStrategy, &unifflev1alpha1.ShuffleServerUpgradeStrategy{
 		Type: unifflev1alpha1.FullUpgrade,

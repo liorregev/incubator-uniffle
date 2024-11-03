@@ -136,6 +136,16 @@ type ShuffleServerConfig struct {
 	// +optional
 	RPCPort *int32 `json:"rpcPort,omitempty"`
 
+	// +kubebuilder:default:=19998
+	// RPCPort defines rpc port used by coordinators in GRPC_NETTY mode.
+	// +optional
+	RPCNettyPort *int32 `json:"rpcNettyPort,omitempty"`
+
+	// +kubebuilder:default:=GRPC
+	// RPCServerType defines the RPC type of the server
+	// +optional
+	RPCServerType *string `json:"rpcServerType,omitempty"`
+
 	// +kubebuilder:default:=19996
 	// HTTPPort defines http port used by shuffle servers.
 	// +optional

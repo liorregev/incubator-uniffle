@@ -6895,7 +6895,16 @@ spec:
                     default: 19997
                     description: RPCPort defines rpc port used by shuffle servers.
                     format: int32
+                    type: integer  
+                  rpcNettyPort:
+                    default: 19998
+                    description: RPCPort defines rpc port used by shuffle servers.
+                    format: int32
                     type: integer
+                  rpcServerType:
+                    description: GRPC or GRPC_NETTY.
+                    type: string
+                    default: GRPC
                   runtimeClassName:
                     description: RuntimeClassName refers to a RuntimeClass object
                       in the node.k8s.io group, which should be used to run this pod.  If

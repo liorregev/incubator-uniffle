@@ -41,7 +41,7 @@ import (
 
 const (
 	testRuntimeClassName       = "test-runtime"
-	testRPCPort          int32 = 19998
+	testRPCPort          int32 = 20000
 	testHTTPPort         int32 = 19999
 )
 
@@ -200,6 +200,12 @@ func withCustomVolumes(volumes []corev1.Volume) *uniffleapi.RemoteShuffleService
 func buildRssWithCustomRPCPort() *uniffleapi.RemoteShuffleService {
 	rss := utils.BuildRSSWithDefaultValue()
 	rss.Spec.ShuffleServer.RPCPort = pointer.Int32(testRPCPort)
+	return rss
+}
+
+func buildRssWithCustomRPCNettyPort() *uniffleapi.RemoteShuffleService {
+	rss := utils.BuildRSSWithDefaultValue()
+	rss.Spec.ShuffleServer.RPCNettyPort = pointer.Int32(testRPCPort)
 	return rss
 }
 
@@ -415,6 +421,41 @@ func TestGenerateSts(t *testing.T) {
 						Protocol:      corev1.ProtocolTCP,
 					},
 					{
+						ContainerPort: *rss.Spec.ShuffleServer.RPCNettyPort,
+						Protocol:      corev1.ProtocolTCP,
+					},
+					{
+						ContainerPort: *rss.Spec.ShuffleServer.HTTPPort,
+						Protocol:      corev1.ProtocolTCP,
+					},
+				}
+				actualPorts := sts.Spec.Template.Spec.Containers[0].Ports
+				valid = reflect.DeepEqual(expectPorts, actualPorts)
+				if !valid {
+					actualPortsBody, _ := json.Marshal(actualPorts)
+					expectPortsBody, _ := json.Marshal(expectPorts)
+					err = fmt.Errorf("unexpected Ports:\n%v,\nexpected:\n%v",
+						string(actualPortsBody), string(expectPortsBody))
+				}
+				return
+			},
+		},
+		{
+			name: "set custom rpc netty port used by shuffle server",
+			rss:  buildRssWithCustomRPCNettyPort(),
+			IsValidSts: func(sts *appsv1.StatefulSet, rss *uniffleapi.RemoteShuffleService) (
+				valid bool, err error) {
+				// check ports
+				expectPorts := []corev1.ContainerPort{
+					{
+						ContainerPort: *rss.Spec.ShuffleServer.RPCPort,
+						Protocol:      corev1.ProtocolTCP,
+					},
+					{
+						ContainerPort: testRPCPort,
+						Protocol:      corev1.ProtocolTCP,
+					},
+					{
 						ContainerPort: *rss.Spec.ShuffleServer.HTTPPort,
 						Protocol:      corev1.ProtocolTCP,
 					},
@@ -456,6 +497,10 @@ func TestGenerateSts(t *testing.T) {
 				expectPorts := []corev1.ContainerPort{
 					{
 						ContainerPort: *rss.Spec.ShuffleServer.RPCPort,
+						Protocol:      corev1.ProtocolTCP,
+					},
+					{
+						ContainerPort: *rss.Spec.ShuffleServer.RPCNettyPort,
 						Protocol:      corev1.ProtocolTCP,
 					},
 					{
