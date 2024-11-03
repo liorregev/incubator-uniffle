@@ -265,7 +265,7 @@ if [ "$WITH_TEZ" == "true" ]; then
 fi
 
 if [ "$WITH_DASHBOARD" == "true" ]; then
-  BUILD_COMMAND_DASHBOARD=("$MVN" clean package -Pdashboard -pl dashboard -DskipTests -am $@)
+  BUILD_COMMAND_DASHBOARD=("$MVN" clean package -Pdashboard,$HADOOP_PROFILE_ID -pl dashboard -DskipTests -am $@)
 
   echo -e "\nBuilding with..."
   echo -e "\$ ${BUILD_COMMAND_DASHBOARD[@]}\n"

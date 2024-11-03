@@ -17,12 +17,13 @@
 
 package org.apache.uniffle.server;
 
-import org.apache.hadoop.util.NodeHealthScriptRunner;
+import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.util.Shell;
+import org.apache.uniffle.common.exception.RssException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.uniffle.common.exception.RssException;
+import java.io.File;
 
 public class HealthScriptChecker extends Checker {
   private static final Logger LOG = LoggerFactory.getLogger(HealthScriptChecker.class);
@@ -33,7 +34,7 @@ public class HealthScriptChecker extends Checker {
   HealthScriptChecker(ShuffleServerConf conf) {
     super(conf);
     this.healthScriptPath = conf.getString(ShuffleServerConf.HEALTH_CHECKER_SCRIPT_PATH);
-    if (!NodeHealthScriptRunner.shouldRun(healthScriptPath)) {
+    if (!shouldRun(healthScriptPath)) {
       LOG.error(
           "Rss health check script:"
               + healthScriptPath
@@ -42,6 +43,14 @@ public class HealthScriptChecker extends Checker {
       throw new RssException("Health script not available.");
     }
     this.scriptTimeout = conf.getLong(ShuffleServerConf.HEALTH_CHECKER_SCRIPT_EXECUTE_TIMEOUT);
+  }
+
+  boolean shouldRun(String healthScript) {
+    if (healthScript == null || healthScript.trim().isEmpty()) {
+      return false;
+    }
+    File f = new File(healthScript);
+    return f.exists() && FileUtil.canExecute(f);
   }
 
   @Override
