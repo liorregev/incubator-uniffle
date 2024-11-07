@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.BindException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -422,7 +423,16 @@ public class RssUtils {
     if (byteBuffer == null || !byteBuffer.isDirect()) {
       return;
     }
-    PlatformDependent.freeDirectBuffer(byteBuffer);
+    try {
+      PlatformDependent.freeDirectBuffer(byteBuffer);
+    } catch (Throwable e) {
+      Throwable cause = e.getCause();
+
+      if (!(cause instanceof IllegalArgumentException)) {
+        throw e;
+      }
+      // Buffer is duplicate or slice
+    }
   }
 
   public static Constructor<?> getConstructor(String className, Class<?>... parameterTypes)

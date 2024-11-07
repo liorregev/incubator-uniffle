@@ -17,13 +17,6 @@
 
 FROM rss-server:head
 
-USER root
-RUN apt-get update && apt-get install -y git build-essential cmake
-RUN mkdir /mimalloc && git clone https://github.com/microsoft/mimalloc /mimalloc && cd /mimalloc && git checkout v2.1.7 && mkdir -p out/release && cd out/release && cmake ../.. && make && make install
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-USER rssadmin
-
-
 COPY start.sh /data/rssadmin/rss/bin
 COPY server.conf /data/rssadmin/rss/conf
 
