@@ -39,6 +39,7 @@ RUN tar -xvf /data/rssadmin/rss-${RSS_VERSION}-hadoop${HADOOP_SHORT_VERSION}.tgz
 RUN mv /data/rssadmin/rss-${RSS_VERSION}-hadoop${HADOOP_SHORT_VERSION} /data/rssadmin/rss
 RUN rm /data/rssadmin/rss/conf/rss-env.sh
 RUN rm -rf /data/rssadmin/rss-${RSS_VERSION}-hadoop${HADOOP_SHORT_VERSION}.tgz
+RUN wget -nv -O /data/rssadmin/rss/jars/server/gcs-connector-3.0.1.jar "https://github.com/GoogleCloudDataproc/hadoop-connectors/releases/download/v3.0.3/gcs-connector-3.0.3-shaded.jar"
 
 COPY rss-env.sh /data/rssadmin/rss/conf
 
